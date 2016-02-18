@@ -11,8 +11,8 @@ import random
 pygame.init()
 
 # window settings
-WIDTH = 600
-HEIGHT = 600
+WIDTH = 400
+HEIGHT = 650
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 pygame.display.set_caption("Color Switch")
 FPS = 60
@@ -67,8 +67,8 @@ class Block():
     def update(self):
         self.rect[0] -= 3
 
-        if self.rect[0] < -200:
-            self.rect[0] += 800
+        if self.rect[0] < -150:
+            self.rect[0] += 600
 
 
 class Switcher():
@@ -119,17 +119,17 @@ def intersects(a, b):
                 top1 > bottom2)
 
 # game objects
-ball = Ball([290, 400, 20, 20], YELLOW)
+ball = Ball([190, 400, 20, 20], YELLOW)
 
-block1 = Block([0, 300, 200, 20], RED)
-block2 = Block([200, 300, 200, 20], GREEN)
-block3 = Block([400, 300, 200, 20], BLUE)
-block4 = Block([600, 300, 200, 20], YELLOW)
+block1 = Block([0, 315, 150, 20], RED)
+block2 = Block([150, 315, 150, 20], GREEN)
+block3 = Block([300, 315, 150, 20], BLUE)
+block4 = Block([450, 315, 150, 20], YELLOW)
 
 block_list = [block1, block2, block3, block4]
 
-switcher1 = Switcher([285, 100, 30, 30])
-switcher2 = Switcher([285, 500, 30, 30])
+switcher1 = Switcher([185, 70, 30, 30])
+switcher2 = Switcher([185, 550, 30, 30])
 
 switcher_list = [switcher1, switcher2]
 
@@ -151,8 +151,8 @@ while not done:
     for block in block_list:
         block.update()
 
-    if ball.rect[1] > 600 - ball.rect[3]:
-        ball.rect[1] = 600 - ball.rect[3]
+    if ball.rect[1] > 650 - ball.rect[3]:
+        ball.rect[1] = 650 - ball.rect[3]
         ball.vy = GRAVITY
         
     for block in block_list:
