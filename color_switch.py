@@ -6,6 +6,7 @@
 #      <https://github.com/joncoop/color-switch>.
 
 import pygame
+import random
 
 pygame.init()
 
@@ -70,6 +71,34 @@ class Block():
             self.rect[0] += 800
 
 
+class Switcher():
+    def __init__(self, rect):
+        self.rect = rect
+
+    def get_rect(self):
+        return self.rect;
+    
+    def draw(self, surface):
+        half_x = self.rect[2] / 2
+        half_y = self.rect[3] / 2
+        
+        rect_ul = [self.rect[0], self.rect[1], half_x, half_y]
+        rect_ur = [self.rect[0] + half_x, self.rect[1], half_x, half_y]
+        rect_lr = [self.rect[0] + half_x, self.rect[1] + half_y, half_x, half_y]
+        rect_ll = [self.rect[0], self.rect[1] + half_y, half_x, half_y]
+        
+        pygame.draw.rect(surface, RED, rect_ul)
+        pygame.draw.rect(surface, YELLOW, rect_ur)
+        pygame.draw.rect(surface, GREEN, rect_lr)
+        pygame.draw.rect(surface, BLUE, rect_ll)
+
+    def get_rand_color(self):
+        return random.choice([RED, GREEN, BLUE, YELLOW])
+    
+    def update(self):
+        pass
+
+    
 def intersects(a, b):
     rect1 = a.get_rect()
     rect2 = b.get_rect()
@@ -90,15 +119,19 @@ def intersects(a, b):
                 top1 > bottom2)
 
 # game objects
-ball = Ball([290, 290, 20, 20], YELLOW)
+ball = Ball([290, 400, 20, 20], YELLOW)
 
-block1 = Block([0, 200, 200, 20], RED)
-block2 = Block([200, 200, 200, 20], GREEN)
-block3 = Block([400, 200, 200, 20], BLUE)
-block4 = Block([600, 200, 200, 20], YELLOW)
+block1 = Block([0, 300, 200, 20], RED)
+block2 = Block([200, 300, 200, 20], GREEN)
+block3 = Block([400, 300, 200, 20], BLUE)
+block4 = Block([600, 300, 200, 20], YELLOW)
 
 block_list = [block1, block2, block3, block4]
 
+switcher1 = Switcher([285, 100, 30, 30])
+switcher2 = Switcher([285, 500, 30, 30])
+
+switcher_list = [switcher1, switcher2]
 
 # game loop
 done = False
@@ -132,15 +165,21 @@ while not done:
                     ball.rect[1] = block.rect[1] + block.rect[3]
                     ball.vy = GRAVITY
 
-    
+    for switcher in switcher_list:
+        if intersects(ball, switcher):
+            ball.color = switcher.get_rand_color()
+        
     #drawing
     screen.fill(BLACK)
 
     ball.draw(screen)
 
-    for b in block_list:
-        b.draw(screen)
+    for block in block_list:
+        block.draw(screen)
 
+    for switcher in switcher_list:
+        switcher.draw(screen)
+    
     # update screen
     pygame.display.update()
     clock.tick(FPS)
